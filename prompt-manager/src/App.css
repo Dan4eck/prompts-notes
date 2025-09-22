@@ -1,5 +1,6 @@
-/* Japanese-Inspired Retro Design for Prompts & Notes */
+/* Global Styles for Prompts & Notes App */
 
+/* CSS Variables for Japanese-inspired color scheme */
 :root {
   --washi-white: #f5f2ed;
   --sumi-ink: #2d2d2d;
@@ -15,6 +16,7 @@
   --shadow-medium: rgba(0, 0, 0, 0.15);
 }
 
+/* Global reset and base styles */
 * {
   margin: 0;
   padding: 0;
@@ -31,7 +33,7 @@ body {
     radial-gradient(circle at 80% 80%, rgba(75, 83, 32, 0.03) 0%, transparent 50%);
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar styling */
 ::-webkit-scrollbar {
   width: 12px;
 }
@@ -66,61 +68,7 @@ h2, h3 {
   font-weight: 600;
 }
 
-/* Retro card design */
-.min-h-screen {
-  background: linear-gradient(135deg, var(--paper-cream) 0%, var(--washi-white) 100%);
-  min-height: 100vh;
-  position: relative;
-}
-
-.min-h-screen::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(139, 115, 85, 0.02) 2px,
-      rgba(139, 115, 85, 0.02) 4px
-    );
-  pointer-events: none;
-  z-index: 1;
-}
-
-.max-w-4xl {
-  position: relative;
-  z-index: 2;
-}
-
-.bg-white {
-  background: var(--washi-white);
-  border: 1px solid var(--charcoal);
-  box-shadow:
-    0 4px 6px var(--shadow-medium),
-    0 1px 3px var(--shadow-subtle),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  position: relative;
-}
-
-.bg-white::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg,
-    var(--muted-gold) 0%,
-    var(--vermilion) 50%,
-    var(--muted-gold) 100%);
-}
-
-/* Buttons with retro Japanese aesthetics */
+/* Global button styles */
 button {
   font-family: 'Georgia', serif;
   font-weight: 500;
@@ -178,41 +126,7 @@ button:disabled {
   transform: none;
 }
 
-/* Special button styles */
-.bg-blue-600 {
-  background: var(--indigo-dye) !important;
-  color: var(--washi-white) !important;
-  border-color: var(--charcoal);
-}
-
-.bg-blue-600:hover {
-  background: var(--moss-green) !important;
-  color: var(--washi-white) !important;
-}
-
-.bg-gray-600 {
-  background: var(--charcoal) !important;
-  color: var(--washi-white) !important;
-  border-color: var(--charcoal);
-}
-
-.bg-gray-600:hover {
-  background: var(--sumi-ink) !important;
-  color: var(--washi-white) !important;
-}
-
-.bg-gray-200 {
-  background: var(--bamboo) !important;
-  color: var(--washi-white) !important;
-  border-color: var(--charcoal);
-}
-
-.bg-gray-200:hover {
-  background: var(--muted-gold) !important;
-  color: var(--washi-white) !important;
-}
-
-/* Input fields */
+/* Global input field styles */
 input[type="text"], textarea {
   font-family: 'Georgia', serif;
   border: 2px solid var(--charcoal);
@@ -237,107 +151,9 @@ input[type="text"]:focus, textarea:focus {
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
-/* Prompt cards */
-.border {
-  border-color: var(--charcoal) !important;
-}
-
-.rounded-lg {
-  border-radius: 0 !important;
-}
-
-.hover\:shadow-md:hover {
-  box-shadow:
-    0 8px 16px var(--shadow-medium),
-    0 4px 8px var(--shadow-subtle) !important;
-}
-
-.transition-shadow {
-  transition: box-shadow 0.3s ease;
-}
-
-/* Tag pills */
-.bg-blue-100 {
-  background: var(--cherry-blossom) !important;
-  color: var(--sumi-ink) !important;
-  border: 1px solid var(--charcoal);
-}
-
-.text-blue-800 {
-  color: var(--sumi-ink) !important;
-}
-
-.rounded-full {
-  border-radius: 50px !important;
-}
-
-/* Tag filter buttons */
-.bg-gray-200 {
-  background: var(--bamboo) !important;
-  color: var(--washi-white) !important;
-  border: 1px solid var(--charcoal);
-}
-
-.bg-gray-200:hover {
-  background: var(--muted-gold) !important;
-}
-
-.bg-blue-600 {
-  background: var(--indigo-dye) !important;
-  color: var(--washi-white) !important;
-  border: 1px solid var(--charcoal);
-}
-
-/* Text styling */
-.text-gray-800 {
-  color: var(--sumi-ink) !important;
-}
-
-.text-gray-700 {
-  color: var(--charcoal) !important;
-}
-
-.text-gray-600 {
-  color: var(--sumi-ink) !important;
-  opacity: 0.8;
-}
-
-.text-gray-500 {
-  color: var(--charcoal) !important;
-  opacity: 0.7;
-}
-
-.text-gray-400 {
-  color: var(--bamboo) !important;
-}
-
-.text-white {
-  color: var(--washi-white) !important;
-}
-
-/* Utility classes */
+/* Utility classes used across components */
 .p-4, .p-6 {
   padding: 1.5rem !important;
-}
-
-.mb-2, .mb-3, .mb-4, .mb-6 {
-  margin-bottom: 1rem !important;
-}
-
-.mb-6 {
-  margin-bottom: 1.5rem !important;
-}
-
-.space-y-4 > * + * {
-  margin-top: 1rem !important;
-}
-
-.space-x-2 > * + * {
-  margin-left: 0.5rem !important;
-}
-
-.space-x-3 > * + * {
-  margin-left: 0.75rem !important;
 }
 
 /* Animations */
@@ -356,54 +172,13 @@ input[type="text"]:focus, textarea:focus {
   animation: fadeIn 0.5s ease-out;
 }
 
-/* Custom focus ring */
-.focus\:ring-2:focus {
-  box-shadow:
-    0 0 0 3px rgba(211, 84, 0, 0.1),
-    0 0 0 1px var(--vermilion) !important;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .min-h-screen {
-    padding: 1rem !important;
-  }
-
-  .bg-white {
-    margin: 0 !important;
-    border-radius: 0 !important;
-  }
-
-  .p-6 {
-    padding: 1rem !important;
-  }
-
-  h1 {
-    font-size: 2rem !important;
-  }
-}
-
 /* Loading state */
 .loading {
   opacity: 0.6;
   pointer-events: none;
 }
 
-/* Empty state */
-.text-center.py-12 {
-  text-align: center;
-  padding: 3rem 0;
-}
-
-/* Custom line clamp */
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* Retro paper texture effect */
+/* Retro paper texture effect for containers with bg-white */
 .bg-white {
   position: relative;
   background-image:
@@ -440,4 +215,24 @@ input[type="text"]:focus, textarea:focus {
   color: var(--washi-white);
   font-size: 10px;
   font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .min-h-screen {
+    padding: 1rem !important;
+  }
+
+  .bg-white {
+    margin: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  .p-6 {
+    padding: 1rem !important;
+  }
+
+  h1 {
+    font-size: 2rem !important;
+  }
 }

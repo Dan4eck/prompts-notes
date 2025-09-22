@@ -1,0 +1,85 @@
+/* TagFilter Component Styles */
+
+/* Tag filter container */
+.mb-6 {
+  margin-bottom: 1.5rem !important;
+}
+
+/* Filter heading */
+.text-sm {
+  font-size: 0.875rem !important;
+}
+
+.font-medium {
+  font-weight: 500 !important;
+}
+
+.text-gray-700 {
+  color: var(--charcoal) !important;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem !important;
+}
+
+/* Tag button container */
+.flex {
+  display: flex !important;
+}
+
+.flex-wrap {
+  flex-wrap: wrap !important;
+}
+
+.gap-2 {
+  gap: 0.5rem !important;
+}
+
+/* Individual tag buttons */
+.px-3 {
+  padding-left: 0.75rem !important;
+  padding-right: 0.75rem !important;
+}
+
+.py-1 {
+  padding-top: 0.25rem !important;
+  padding-bottom: 0.25rem !important;
+}
+
+.text-sm {
+  font-size: 0.875rem !important;
+}
+
+.rounded-full {
+  border-radius: 50px !important;
+}
+
+/* Selected tag state */
+.bg-blue-600 {
+  background: var(--indigo-dye) !important;
+  color: var(--washi-white) !important;
+  border: 1px solid var(--charcoal);
+}
+
+.text-white {
+  color: var(--washi-white) !important;
+}
+
+/* Unselected tag state */
+.bg-gray-200 {
+  background: var(--bamboo) !important;
+  color: var(--washi-white) !important;
+  border: 1px solid var(--charcoal);
+}
+
+.text-gray-700 {
+  color: var(--washi-white) !important;
+}
+
+.bg-gray-200:hover {
+  background: var(--muted-gold) !important;
+}
+
+.bg-gray-300:hover {
+  background: var(--muted-gold) !important;
+}

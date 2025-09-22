@@ -1,8 +1,15 @@
-# CLAUDE.md
+<!-- prompt-manager/CLAUDE.md -->
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to u when working with code in this repository.
 
-## Project Overview
+# System prompt
+
+U are code-assistant working in one team with the user on the project building chrome-extension for storing prompts and notes. The name of the project – prompts&notes
+
+When coding frontend prioritise clear and and well-strucutred code with seperation of concerns
+
+
+# Project Overview
 
 This is a **Prompt Manager** application built with React, TypeScript, and Vite. It's designed to help users create, manage, search, and export prompts and notes. The application uses Chrome's local storage for data persistence.
 
@@ -29,7 +36,7 @@ npm test             # Run tests with Vitest (configured but no tests yet)
 
 - **React 19** with TypeScript
 - **Vite** for build tooling and development server
-- **Tailwind CSS 4** for styling with custom color themes
+- **Custom CSS** with Japanese-inspired retro design theme (refactored from Tailwind CSS 4)
 - **Chrome Extension APIs** for local storage persistence
 - **ESLint** with TypeScript and React hooks configuration
 - **Fuse.js** (for future search functionality)
@@ -38,23 +45,55 @@ npm test             # Run tests with Vitest (configured but no tests yet)
 
 ## Architecture
 
-### Core Components
-- **App.tsx**: Main component containing all application logic
-- **State Management**: Uses React's useState for local state
-- **Data Persistence**: Chrome storage.local API for saving prompts
-- **Views**: Single-page application with conditional rendering for list/edit modes
 
-### Data Structure
-```typescript
-interface Prompt {
-  id: string
-  title: string
-  content: string
-  tags: string[]
-  createdAt: Date
-  category?: string
-}
+### Architecture Pattern
+- **Container/Presenter**: App.tsx serves as the container (logic/state), components are presenters (UI/interaction)
+- **Single Responsibility**: Each component handles one specific UI concern
+- **Props-Driven**: Components receive data and callbacks via props for clear data flow
+- **State Management**: Centralized in App.tsx using React's useState hooks
+- **Data Persistence**: Chrome storage.local API integration managed at the App level
+
+### Project Structure
 ```
+.
+├── CLAUDE.md
+├── eslint.config.js
+├── index.html
+├── package-lock.json
+├── package.json
+├── plan.md
+├── postcss.config.js
+├── prd.md
+├── public
+│   ├── manifest.json
+│   └── vite.svg
+├── src
+│   ├── App.css                    # Global styles and CSS variables
+│   ├── App.tsx                    # Main application container
+│   ├── assets
+│   │   └── react.svg
+│   ├── components
+│   │   ├── ExportMenu.tsx         # Export functionality component
+│   │   ├── ExportMenu.css         # Export menu-specific styles
+│   │   ├── PromptCard.tsx         # Individual prompt card component
+│   │   ├── PromptCard.css         # Card-specific styles
+│   │   ├── PromptEditor.tsx       # Prompt creation/editing component
+│   │   ├── PromptEditor.css       # Editor-specific styles
+│   │   ├── PromptList.tsx         # List view component
+│   │   ├── PromptList.css         # List-specific styles
+│   │   ├── SearchBar.tsx          # Search functionality component
+│   │   ├── SearchBar.css          # Search-specific styles
+│   │   ├── TagFilter.tsx          # Tag filtering component
+│   │   └── TagFilter.css          # Tag filter-specific styles
+│   ├── main.tsx
+│   └── vite-env.d.ts
+├── tailwind.config.js
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+└── vite.config.ts
+```
+
 
 ### Key Features
 - **CRUD Operations**: Create, read, update, delete prompts
@@ -71,9 +110,12 @@ interface Prompt {
 - Could be adapted for web use with localStorage fallback
 
 ### Styling Approach
-- Tailwind CSS with custom color variants for light/dark themes
-- Responsive design using Tailwind's utility classes
-- Component-based structure with consistent spacing and colors
+- **Custom CSS Architecture**: Component-based CSS organization (refactored September 2024)
+- **Japanese-Inspired Theme**: Custom color palette with washi paper textures and retro aesthetics
+- **Component-Scoped Styles**: Each component has its own CSS file for better maintainability
+- **Global Styles**: App.css contains only global variables, base styles, and utilities
+- **Responsive Design**: Mobile-first approach with Japanese design elements
+- **CSS Variables**: Centralized color management with themes like --sumi-ink, --washi-white, --vermilion
 
 ### Build Configuration
 - Vite configured for single-page application build

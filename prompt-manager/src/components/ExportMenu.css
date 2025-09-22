@@ -1,0 +1,58 @@
+/* ExportMenu Component Styles */
+
+/* Export button container */
+.flex {
+  display: flex !important;
+}
+
+.space-x-2 > * + * {
+  margin-left: 0.5rem !important;
+}
+
+/* Export buttons */
+.px-3 {
+  padding-left: 0.75rem !important;
+  padding-right: 0.75rem !important;
+}
+
+.py-1 {
+  padding-top: 0.25rem !important;
+  padding-bottom: 0.25rem !important;
+}
+
+.text-sm {
+  font-size: 0.875rem !important;
+}
+
+.bg-gray-600 {
+  background: var(--charcoal) !important;
+  color: var(--washi-white) !important;
+  border-color: var(--charcoal);
+}
+
+.bg-gray-600:hover {
+  background: var(--sumi-ink) !important;
+}
+
+.text-white {
+  color: var(--washi-white) !important;
+}
+
+.rounded {
+  border-radius: 0 !important;
+}
+
+.hover\:bg-gray-700:hover {
+  background: var(--sumi-ink) !important;
+}
+
+/* Disabled state */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+button:disabled:hover {
+  background: var(--charcoal) !important;
+}

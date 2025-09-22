@@ -1,4 +1,9 @@
 import { useState, useEffect } from 'react'
+import PromptList from './components/PromptList'
+import PromptEditor from './components/PromptEditor'
+import SearchBar from './components/SearchBar'
+import TagFilter from './components/TagFilter'
+import ExportMenu from './components/ExportMenu'
 
 interface Prompt {
   id: string
@@ -6,14 +11,13 @@ interface Prompt {
   content: string
   tags: string[]
   createdAt: Date
-  category?: string
 }
 
 function App() {
   const [prompts, setPrompts] = useState<Prompt[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedTags, setSelectedTags] = useState<string[]>([])
-  const [viewMode, setViewMode] = useState<'list' | 'edit' | 'preview'>('list')
+  const [viewMode, setViewMode] = useState<'list' | 'edit'>('list')
   const [editingPrompt, setEditingPrompt] = useState<Partial<Prompt>>({})
   const [availableTags, setAvailableTags] = useState<string[]>([])
 
@@ -23,14 +27,14 @@ function App() {
       if (chrome?.storage?.local) {
         chrome.storage.local.get(['prompts'], (result) => {
           if (result.prompts) {
-            const loadedPrompts = result.prompts.map((p: any) => ({
+            const loadedPrompts = result.prompts.map((p: Prompt) => ({
               ...p,
               createdAt: new Date(p.createdAt)
             }))
             setPrompts(loadedPrompts)
 
             // Extract all unique tags
-            const allTags = loadedPrompts.flatMap(p => p.tags)
+            const allTags = loadedPrompts.flatMap((p: Prompt) => p.tags) as string[]
             setAvailableTags([...new Set(allTags)])
           }
         })
@@ -52,17 +56,6 @@ function App() {
       setAvailableTags([...new Set(allTags)])
     }
   }
-
-  const filteredPrompts = prompts.filter(prompt => {
-    const matchesSearch = !searchQuery ||
-      prompt.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      prompt.content.toLowerCase().includes(searchQuery.toLowerCase())
-
-    const matchesTags = selectedTags.length === 0 ||
-      selectedTags.every(tag => prompt.tags.includes(tag))
-
-    return matchesSearch && matchesTags
-  })
 
   const handleCreatePrompt = () => {
     const newPrompt: Prompt = {
@@ -90,8 +83,7 @@ function App() {
       title: editingPrompt.title,
       content: editingPrompt.content || '',
       tags: editingPrompt.tags || [],
-      createdAt: editingPrompt.createdAt ? new Date(editingPrompt.createdAt) : new Date(),
-      category: editingPrompt.category
+      createdAt: editingPrompt.createdAt ? new Date(editingPrompt.createdAt) : new Date()
     }
 
     const existingIndex = prompts.findIndex(p => p.id === editingPrompt.id)
@@ -158,98 +150,15 @@ function App() {
 
   if (viewMode === 'edit') {
     return (
-      <div className="min-h-screen bg-gray-50 p-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">
-                {editingPrompt.id ? 'Edit Prompt' : 'Create New Prompt'}
-              </h2>
-              <button
-                onClick={() => {
-                  setViewMode('list')
-                  setEditingPrompt({})
-                }}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                Cancel
-              </button>
-            </div>
-
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Title
-                </label>
-                <input
-                  type="text"
-                  value={editingPrompt.title || ''}
-                  onChange={(e) => setEditingPrompt(prev => ({
-                    ...prev,
-                    title: e.target.value
-                  }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter prompt title..."
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Content
-                </label>
-                <textarea
-                  value={editingPrompt.content || ''}
-                  onChange={(e) => setEditingPrompt(prev => ({
-                    ...prev,
-                    content: e.target.value
-                  }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 h-64 font-mono text-sm"
-                  placeholder="Enter your prompt content here..."
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Tags (comma-separated)
-                </label>
-                <input
-                  type="text"
-                  value={editingPrompt.tags?.join(', ') || ''}
-                  onChange={(e) => setEditingPrompt(prev => ({
-                    ...prev,
-                    tags: e.target.value.split(',').map(t => t.trim()).filter(Boolean)
-                  }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="tag1, tag2, tag3..."
-                />
-              </div>
-
-              <div className="flex justify-end space-x-3">
-                <button
-                  onClick={() => {
-                    setViewMode('list')
-                    setEditingPrompt({})
-                  }}
-                  className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleSavePrompt}
-                  disabled={!editingPrompt.title}
-                  className={`px-4 py-2 rounded-md text-white ${
-                    editingPrompt.title
-                      ? 'bg-blue-600 hover:bg-blue-700'
-                      : 'bg-blue-400 cursor-not-allowed'
-                  }`}
-                >
-                  Save Prompt
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <PromptEditor
+        editingPrompt={editingPrompt}
+        onEditPromptChange={setEditingPrompt}
+        onSave={handleSavePrompt}
+        onCancel={() => {
+          setViewMode('list')
+          setEditingPrompt({})
+        }}
+      />
     )
   }
 
@@ -259,132 +168,33 @@ function App() {
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-3xl font-bold text-gray-800">Prompts & Notes</h1>
-            <div className="flex space-x-2">
-              <button
-                onClick={exportToJson}
-                className="px-3 py-1 text-sm bg-gray-600 text-white rounded hover:bg-gray-700"
-              >
-                Export JSON
-              </button>
-              <button
-                onClick={exportToCsv}
-                className="px-3 py-1 text-sm bg-gray-600 text-white rounded hover:bg-gray-700"
-              >
-                Export CSV
-              </button>
-              <button
-                onClick={handleCreatePrompt}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-              >
-                New Prompt
-              </button>
-            </div>
-          </div>
-
-          <div className="mb-6">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search prompts..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            <ExportMenu
+              prompts={prompts}
+              onExportToJson={exportToJson}
+              onExportToCsv={exportToCsv}
             />
           </div>
 
-          {availableTags.length > 0 && (
-            <div className="mb-6">
-              <h3 className="text-sm font-medium text-gray-700 mb-2">Filter by tags:</h3>
-              <div className="flex flex-wrap gap-2">
-                {availableTags.map(tag => (
-                  <button
-                    key={tag}
-                    onClick={() => handleTagToggle(tag)}
-                    className={`px-3 py-1 text-sm rounded-full ${
-                      selectedTags.includes(tag)
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                    }`}
-                  >
-                    {tag}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+          <SearchBar
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+          />
 
-          <div className="space-y-4">
-            {filteredPrompts.length === 0 ? (
-              <div className="text-center py-12">
-                <p className="text-gray-500 mb-4">
-                  {searchQuery || selectedTags.length > 0
-                    ? 'No prompts match your search criteria.'
-                    : 'No prompts yet. Create your first prompt to get started!'
-                  }
-                </p>
-                {!searchQuery && selectedTags.length === 0 && (
-                  <button
-                    onClick={handleCreatePrompt}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                  >
-                    Create First Prompt
-                  </button>
-                )}
-              </div>
-            ) : (
-              filteredPrompts.map(prompt => (
-                <div key={prompt.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-lg font-semibold text-gray-800">{prompt.title}</h3>
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => copyToClipboard(prompt.content)}
-                        className="text-gray-500 hover:text-gray-700 text-sm"
-                        title="Copy to clipboard"
-                      >
-                        📋
-                      </button>
-                      <button
-                        onClick={() => handleEditPrompt(prompt)}
-                        className="text-gray-500 hover:text-gray-700 text-sm"
-                        title="Edit prompt"
-                      >
-                        ✏️
-                      </button>
-                      <button
-                        onClick={() => handleDeletePrompt(prompt.id)}
-                        className="text-gray-500 hover:text-red-700 text-sm"
-                        title="Delete prompt"
-                      >
-                        🗑️
-                      </button>
-                    </div>
-                  </div>
+          <TagFilter
+            availableTags={availableTags}
+            selectedTags={selectedTags}
+            onTagToggle={handleTagToggle}
+          />
 
-                  <p className="text-gray-600 mb-3 line-clamp-3">
-                    {prompt.content.substring(0, 200)}
-                    {prompt.content.length > 200 && '...'}
-                  </p>
-
-                  {prompt.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-1">
-                      {prompt.tags.map(tag => (
-                        <span
-                          key={tag}
-                          className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-
-                  <div className="text-xs text-gray-400 mt-2">
-                    Created: {prompt.createdAt.toLocaleDateString()}
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
+          <PromptList
+            prompts={prompts}
+            searchQuery={searchQuery}
+            selectedTags={selectedTags}
+            onEdit={handleEditPrompt}
+            onDelete={handleDeletePrompt}
+            onCopy={copyToClipboard}
+            onCreateNew={handleCreatePrompt}
+          />
         </div>
       </div>
     </div>
