@@ -1,10 +1,6 @@
 import './TagFilter.css'
 
-interface TagFilterProps {
-  availableTags: string[]
-  selectedTags: string[]
-  onTagToggle: (tag: string) => void
-}
+import type { TagFilterProps } from '../types'
 
 function TagFilter({ availableTags, selectedTags, onTagToggle }: TagFilterProps) {
   if (availableTags.length === 0) {

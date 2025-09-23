@@ -1,16 +1,6 @@
 import './ExportMenu.css'
 
-interface ExportMenuProps {
-  prompts: Array<{
-    id: string
-    title: string
-    content: string
-    tags: string[]
-    createdAt: Date
-  }>
-  onExportToJson: () => void
-  onExportToCsv: () => void
-}
+import type { ExportMenuProps } from '../types'
 
 function ExportMenu({ prompts, onExportToJson, onExportToCsv }: ExportMenuProps) {
   return (

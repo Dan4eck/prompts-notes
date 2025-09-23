@@ -1,10 +1,6 @@
 import './SearchBar.css'
 
-interface SearchBarProps {
-  searchQuery: string
-  onSearchChange: (query: string) => void
-  placeholder?: string
-}
+import type { SearchBarProps } from '../types'
 
 function SearchBar({ searchQuery, onSearchChange, placeholder = "Search prompts..." }: SearchBarProps) {
   return (

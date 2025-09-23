@@ -1,24 +1,8 @@
+import { useMemo } from 'react'
 import PromptCard from './PromptCard'
 import './PromptList.css'
 
-interface Prompt {
-  id: string
-  title: string
-  content: string
-  tags: string[]
-  createdAt: Date
-  category?: string
-}
-
-interface PromptListProps {
-  prompts: Prompt[]
-  searchQuery: string
-  selectedTags: string[]
-  onEdit: (prompt: Prompt) => void
-  onDelete: (id: string) => void
-  onCopy: (content: string) => void
-  onCreateNew: () => void
-}
+import type { PromptListProps } from '../types'
 
 function PromptList({
   prompts,
@@ -29,7 +13,8 @@ function PromptList({
   onCopy,
   onCreateNew
 }: PromptListProps) {
-  const filteredPrompts = prompts.filter(prompt => {
+const filteredPrompts = useMemo(() => {
+  return prompts.filter(prompt => {
     const matchesSearch = !searchQuery ||
       prompt.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       prompt.content.toLowerCase().includes(searchQuery.toLowerCase())
@@ -39,6 +24,7 @@ function PromptList({
 
     return matchesSearch && matchesTags
   })
+}, [prompts, searchQuery, selectedTags])
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">

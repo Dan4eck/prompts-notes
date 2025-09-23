@@ -45,13 +45,35 @@ npm test             # Run tests with Vitest (configured but no tests yet)
 
 ## Architecture
 
-
 ### Architecture Pattern
-- **Container/Presenter**: App.tsx serves as the container (logic/state), components are presenters (UI/interaction)
-- **Single Responsibility**: Each component handles one specific UI concern
-- **Props-Driven**: Components receive data and callbacks via props for clear data flow
-- **State Management**: Centralized in App.tsx using React's useState hooks
-- **Data Persistence**: Chrome storage.local API integration managed at the App level
+- **Custom Hooks-Based Architecture**: Logic extracted into reusable custom hooks
+- **Component-Driven UI**: Components focus on presentation, hooks handle business logic
+- **Type-Safe Development**: Centralized TypeScript types with strict mode enabled
+- **Error Boundaries**: Graceful error handling at component level
+- **Performance Optimized**: React performance best practices with memoization
+
+### Core Architecture Components
+
+#### Data Layer
+- **`usePrompts` Hook**: Handles all CRUD operations, Chrome storage integration, and data state management
+- **`usePromptFilter` Hook**: Manages search, filtering, sorting logic with memoized performance
+- **`useExport` Hook**: Handles export functionality (JSON, CSV) and clipboard operations
+
+#### UI Layer
+- **`App.tsx`**: Main orchestration component, connects hooks with UI components
+- **Presentational Components**: Focus solely on UI rendering and user interactions
+- **Container Components**: None needed - hooks replace container pattern
+
+#### Type System
+- **Centralized Types**: All interfaces and types in `/src/types/index.ts`
+- **Shared Interfaces**: Consistent typing across all components and hooks
+- **Strict TypeScript**: No implicit any, verbatim module syntax enabled
+
+#### Error Handling & UX
+- **ErrorBoundary**: Catches React errors and displays graceful fallback UI
+- **ErrorMessage**: Reusable error component with retry/dismiss actions
+- **LoadingSpinner**: Consistent loading states across the application
+- **Keyboard Shortcuts**: Enhanced accessibility with keyboard navigation
 
 ### Project Structure
 ```
@@ -61,7 +83,7 @@ npm test             # Run tests with Vitest (configured but no tests yet)
 ├── index.html
 ├── package-lock.json
 ├── package.json
-├── plan.md
+├── history.md
 ├── postcss.config.js
 ├── prd.md
 ├── public
@@ -69,12 +91,20 @@ npm test             # Run tests with Vitest (configured but no tests yet)
 │   └── vite.svg
 ├── src
 │   ├── App.css                    # Global styles and CSS variables
-│   ├── App.tsx                    # Main application container
+│   ├── App.tsx                    # Main application orchestrator
 │   ├── assets
 │   │   └── react.svg
 │   ├── components
+│   │   ├── ErrorBoundary.tsx      # React error boundary wrapper
+│   │   ├── ErrorBoundary.css      # Error boundary styles
+│   │   ├── ErrorMessage.tsx        # Reusable error message component
+│   │   ├── ErrorMessage.css        # Error message styles
 │   │   ├── ExportMenu.tsx         # Export functionality component
 │   │   ├── ExportMenu.css         # Export menu-specific styles
+│   │   ├── KeyboardShortcutsHelp.tsx # Keyboard shortcuts help modal
+│   │   ├── KeyboardShortcutsHelp.css # Help modal styles
+│   │   ├── LoadingSpinner.tsx     # Loading spinner component
+│   │   ├── LoadingSpinner.css     # Spinner styles
 │   │   ├── PromptCard.tsx         # Individual prompt card component
 │   │   ├── PromptCard.css         # Card-specific styles
 │   │   ├── PromptEditor.tsx       # Prompt creation/editing component
@@ -85,6 +115,13 @@ npm test             # Run tests with Vitest (configured but no tests yet)
 │   │   ├── SearchBar.css          # Search-specific styles
 │   │   ├── TagFilter.tsx          # Tag filtering component
 │   │   └── TagFilter.css          # Tag filter-specific styles
+│   ├── hooks
+│   │   ├── useExport.ts           # Export functionality hook
+│   │   ├── useKeyboardShortcuts.ts # Keyboard shortcuts hook
+│   │   ├── usePromptFilter.ts     # Filtering and sorting hook
+│   │   └── usePrompts.ts          # Prompt data management hook
+│   ├── types
+│   │   └── index.ts               # Centralized TypeScript types
 │   ├── main.tsx
 │   └── vite-env.d.ts
 ├── tailwind.config.js
@@ -94,13 +131,44 @@ npm test             # Run tests with Vitest (configured but no tests yet)
 └── vite.config.ts
 ```
 
-
 ### Key Features
-- **CRUD Operations**: Create, read, update, delete prompts
-- **Search**: Filter prompts by title/content
-- **Tag System**: Dynamic tag filtering and management
-- **Export**: JSON and CSV export functionality
-- **Copy to Clipboard**: Quick content copying
+- **CRUD Operations**: Create, read, update, delete prompts with async error handling
+- **Search & Filter**: Real-time search by title/content with tag filtering
+- **Tag System**: Dynamic tag management with validation (max 10 tags)
+- **Export**: JSON and CSV export with timestamped filenames
+- **Copy to Clipboard**: Async clipboard operations with error handling
+- **Keyboard Shortcuts**: Power user shortcuts (Ctrl+N, /, Esc, ?)
+- **Error Recovery**: Graceful error handling with retry mechanisms
+- **Loading States**: Consistent loading indicators during async operations
+
+### Data Flow Architecture
+
+#### State Management Flow
+1. **User Action** → Component event handler
+2. **Component** → Calls custom hook method
+3. **Hook** → Performs async operation (Chrome storage)
+4. **Hook** → Updates internal state
+5. **Hook** → Returns updated data to component
+6. **Component** → Re-renders with new data
+
+#### Hook Dependencies
+- `usePrompts`: Independent, manages prompt data
+- `usePromptFilter`: Depends on prompts data, provides filtered results
+- `useExport`: Independent, provides export utilities
+- `useKeyboardShortcuts`: Independent, provides keyboard accessibility
+
+### Performance Optimizations
+
+#### React Performance
+- **useMemo**: Expensive filtering operations memoized in usePromptFilter
+- **useCallback**: Stable function references prevent unnecessary re-renders
+- **Memoized Components**: Components only re-render when props change
+- **Optimized Filtering**: Search and tag filtering cached until dependencies change
+
+#### Bundle Optimization
+- **Tree Shaking**: Unused code eliminated during build
+- **Code Splitting**: Automatic chunking for large applications
+- **CSS Optimization**: Component-scoped styles for better caching
 
 ## Development Notes
 
@@ -108,6 +176,7 @@ npm test             # Run tests with Vitest (configured but no tests yet)
 - Application checks for `chrome?.storage?.local` availability
 - Gracefully handles cases where Chrome APIs are not available
 - Could be adapted for web use with localStorage fallback
+- Async operations include proper error handling and loading states
 
 ### Styling Approach
 - **Custom CSS Architecture**: Component-based CSS organization (refactored September 2024)
@@ -120,7 +189,7 @@ npm test             # Run tests with Vitest (configured but no tests yet)
 ### Build Configuration
 - Vite configured for single-page application build
 - Rollup options optimized for Chrome extension popup structure
-- TypeScript compilation includes strict type checking
+- TypeScript compilation includes strict type checking with verbatim module syntax
 
 ## Testing
 
@@ -129,12 +198,14 @@ The project is configured with Vitest and @testing-library/react but currently h
 - Tests should be placed in `src/__tests__/` directory
 - Use `*.test.tsx` or `*.test.ts` naming convention
 - Follow React Testing Library patterns for component testing
+- Test hooks separately with @testing-library/react-hooks
 
 ## Linting and Code Quality
 
 - ESLint configuration includes TypeScript, React hooks, and React refresh rules
 - Uses TypeScript strict mode for type safety
-- Consider enabling type-aware linting for production builds (see README.md)
+- Verbatim module syntax enabled for cleaner imports
+- No explicit any types allowed without justification
 
 ## Future Enhancements
 
@@ -142,3 +213,9 @@ The application has dependencies for advanced features not yet implemented:
 - **Fuse.js**: Advanced fuzzy search capabilities
 - **marked**: Markdown rendering support
 - **highlight.js**: Syntax highlighting for code blocks
+
+### Hook Extensions
+- **useDebounce**: Debounced search for better performance
+- **useLocalStorage**: Fallback for non-Chrome environments
+- **useToast**: Toast notification system
+- **useConfirmation**: Confirmation dialogs for destructive actions

@@ -1,5 +1,9 @@
 # Prompt Manager Implementation Plan
 
+## Bug fixes 
+- [ ] search by tags does not work
+- [ ]
+
 ## Current Status
 - [x] Template setup and configuration
 - [x] PostCSS configuration fix
@@ -29,6 +33,9 @@
 - [ ] Create markdown preview component
 - [ ] Add tag management system
 - [ ] Implement export features (JSON, CSV, Markdown)
+
+
+
 
 ## Chrome Extension Specific Features
 - [ ] Popup UI optimization for extension constraints

@@ -1,21 +1,8 @@
-import { useState } from 'react'
-
-interface Prompt {
-  id: string
-  title: string
-  content: string
-  tags: string[]
-  createdAt: Date
-}
+import { useState, useCallback, useMemo } from 'react'
 
 import './PromptEditor.css'
 
-interface PromptEditorProps {
-  editingPrompt: Partial<Prompt>
-  onEditPromptChange: (prompt: Partial<Prompt>) => void
-  onSave: () => void
-  onCancel: () => void
-}
+import type { PromptEditorProps } from '../types'
 
 function PromptEditor({
   editingPrompt,
@@ -27,15 +14,15 @@ function PromptEditor({
     return Array.isArray(editingPrompt.tags) ? editingPrompt.tags.join(', ') : ''
   })
 
-  const handleTitleChange = (title: string) => {
+  const handleTitleChange = useCallback((title: string) => {
     onEditPromptChange({ ...editingPrompt, title })
-  }
+  }, [editingPrompt, onEditPromptChange])
 
-  const handleContentChange = (content: string) => {
+  const handleContentChange = useCallback((content: string) => {
     onEditPromptChange({ ...editingPrompt, content })
-  }
+  }, [editingPrompt, onEditPromptChange])
 
-  const handleTagsChange = (tagsString: string) => {
+  const handleTagsChange = useCallback((tagsString: string) => {
     setTagInputValue(tagsString) // Always preserve the raw input
 
     // Only process the tags when it makes sense to do so
@@ -45,16 +32,16 @@ function PromptEditor({
       .slice(0, 10)
 
     onEditPromptChange({ ...editingPrompt, tags })
-  }
+  }, [editingPrompt, onEditPromptChange])
 
-  const getCurrentTagCount = () => {
+  const getCurrentTagCount = useMemo(() => {
     if (!Array.isArray(editingPrompt.tags)) return 0
     return editingPrompt.tags.length
-  }
+  }, [editingPrompt.tags])
 
-  const getRemainingTags = () => {
-    return Math.max(0, 10 - getCurrentTagCount())
-  }
+  const getRemainingTags = useMemo(() => {
+    return Math.max(0, 10 - getCurrentTagCount)
+  }, [getCurrentTagCount])
 
 
   return (
@@ -85,8 +72,8 @@ function PromptEditor({
               <div className="lg:col-span-1">
                 <label className="block text-sm font-medium text-gray-700 mb-3">
                   Tags (comma-separated, max 10)
-                  <span className={`ml-2 text-xs font-normal ${getRemainingTags() <= 2 ? 'text-red-600' : getRemainingTags() <= 5 ? 'text-yellow-600' : 'text-gray-500'}`}>
-                    {getRemainingTags()} remaining
+                  <span className={`ml-2 text-xs font-normal ${getRemainingTags <= 2 ? 'text-red-600' : getRemainingTags <= 5 ? 'text-yellow-600' : 'text-gray-500'}`}>
+                    {getRemainingTags} remaining
                   </span>
                 </label>
                 <input
@@ -94,15 +81,15 @@ function PromptEditor({
                   value={tagInputValue}
                   onChange={(e) => handleTagsChange(e.target.value)}
                   className={`w-full px-5 py-4 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent ${
-                    getCurrentTagCount() >= 10
+                    getCurrentTagCount >= 10
                       ? 'border-red-300 focus:ring-red-500'
-                      : getCurrentTagCount() >= 8
+                      : getCurrentTagCount >= 8
                         ? 'border-yellow-300 focus:ring-yellow-500'
                         : 'border-gray-300 focus:ring-blue-500'
                   }`}
                   placeholder="tag1, tag2, tag3..."
                 />
-                {getCurrentTagCount() >= 10 && (
+                {getCurrentTagCount >= 10 && (
                   <p className="mt-1 text-xs text-red-600">
                     Maximum 10 tags allowed
                   </p>

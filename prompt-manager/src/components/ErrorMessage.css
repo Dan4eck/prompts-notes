@@ -1,0 +1,65 @@
+.error-message {
+  background-color: var(--red-orange-light);
+  border: 1px solid var(--red-orange);
+  border-radius: 6px;
+  padding: 1rem;
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.error-message__content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.error-message__icon {
+  font-size: 1.125rem;
+}
+
+.error-message__text {
+  color: var(--sumi-ink);
+  font-size: 0.875rem;
+  margin: 0;
+  flex: 1;
+}
+
+.error-message__actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: 1rem;
+}
+
+.error-message__retry,
+.error-message__dismiss {
+  padding: 0.375rem 0.75rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.error-message__retry {
+  background-color: var(--sumi-ink);
+  color: white;
+}
+
+.error-message__retry:hover {
+  background-color: var(--sumi-ink-dark);
+}
+
+.error-message__dismiss {
+  background-color: transparent;
+  color: var(--sumi-ink);
+  border: 1px solid var(--sumi-ink);
+}
+
+.error-message__dismiss:hover {
+  background-color: var(--sumi-ink);
+  color: white;
+}

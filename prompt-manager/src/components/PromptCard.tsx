@@ -1,20 +1,6 @@
-interface Prompt {
-  id: string
-  title: string
-  content: string
-  tags: string[]
-  createdAt: Date
-  category?: string
-}
-
 import './PromptCard.css'
 
-interface PromptCardProps {
-  prompt: Prompt
-  onEdit: (prompt: Prompt) => void
-  onDelete: (id: string) => void
-  onCopy: (content: string) => void
-}
+import type { PromptCardProps } from '../types'
 
 function PromptCard({ prompt, onEdit, onDelete, onCopy }: PromptCardProps) {
   return (
