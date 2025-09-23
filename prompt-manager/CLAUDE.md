@@ -73,7 +73,6 @@ npm test             # Run tests with Vitest (configured but no tests yet)
 - **ErrorBoundary**: Catches React errors and displays graceful fallback UI
 - **ErrorMessage**: Reusable error component with retry/dismiss actions
 - **LoadingSpinner**: Consistent loading states across the application
-- **Keyboard Shortcuts**: Enhanced accessibility with keyboard navigation
 
 ### Project Structure
 ```
@@ -101,8 +100,6 @@ npm test             # Run tests with Vitest (configured but no tests yet)
 │   │   ├── ErrorMessage.css        # Error message styles
 │   │   ├── ExportMenu.tsx         # Export functionality component
 │   │   ├── ExportMenu.css         # Export menu-specific styles
-│   │   ├── KeyboardShortcutsHelp.tsx # Keyboard shortcuts help modal
-│   │   ├── KeyboardShortcutsHelp.css # Help modal styles
 │   │   ├── LoadingSpinner.tsx     # Loading spinner component
 │   │   ├── LoadingSpinner.css     # Spinner styles
 │   │   ├── PromptCard.tsx         # Individual prompt card component
@@ -117,7 +114,6 @@ npm test             # Run tests with Vitest (configured but no tests yet)
 │   │   └── TagFilter.css          # Tag filter-specific styles
 │   ├── hooks
 │   │   ├── useExport.ts           # Export functionality hook
-│   │   ├── useKeyboardShortcuts.ts # Keyboard shortcuts hook
 │   │   ├── usePromptFilter.ts     # Filtering and sorting hook
 │   │   └── usePrompts.ts          # Prompt data management hook
 │   ├── types
@@ -137,7 +133,6 @@ npm test             # Run tests with Vitest (configured but no tests yet)
 - **Tag System**: Dynamic tag management with validation (max 10 tags)
 - **Export**: JSON and CSV export with timestamped filenames
 - **Copy to Clipboard**: Async clipboard operations with error handling
-- **Keyboard Shortcuts**: Power user shortcuts (Ctrl+N, /, Esc, ?)
 - **Error Recovery**: Graceful error handling with retry mechanisms
 - **Loading States**: Consistent loading indicators during async operations
 
@@ -155,7 +150,6 @@ npm test             # Run tests with Vitest (configured but no tests yet)
 - `usePrompts`: Independent, manages prompt data
 - `usePromptFilter`: Depends on prompts data, provides filtered results
 - `useExport`: Independent, provides export utilities
-- `useKeyboardShortcuts`: Independent, provides keyboard accessibility
 
 ### Performance Optimizations
 

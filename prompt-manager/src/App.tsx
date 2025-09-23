@@ -2,7 +2,6 @@ import { useState, useCallback } from 'react'
 import { usePrompts } from './hooks/usePrompts'
 import { usePromptFilter } from './hooks/usePromptFilter'
 import { useExport } from './hooks/useExport'
-import { useKeyboardShortcuts, useShortcutHelp } from './hooks/useKeyboardShortcuts'
 import type { ViewMode, FilterOptions, Prompt } from './types'
 import PromptList from './components/PromptList'
 import PromptEditor from './components/PromptEditor'
@@ -12,7 +11,6 @@ import ExportMenu from './components/ExportMenu'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { LoadingSpinner } from './components/LoadingSpinner'
 import { ErrorMessage } from './components/ErrorMessage'
-import { KeyboardShortcutsHelp } from './components/KeyboardShortcutsHelp'
 
 function App() {
   const { prompts, loading, error, createPrompt, updatePrompt, deletePrompt, refreshPrompts } = usePrompts()
@@ -22,7 +20,6 @@ function App() {
   const [editingPrompt, setEditingPrompt] = useState<Partial<Prompt>>({})
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedTags, setSelectedTags] = useState<string[]>([])
-  const [showShortcutsHelp, setShowShortcutsHelp] = useState(false)
   const [filterError, setFilterError] = useState<string | null>(null)
 
   const filterOptions: FilterOptions = {
@@ -103,43 +100,6 @@ function App() {
     }
   }, [copyToClipboard])
 
-  const shortcuts = [
-    {
-      key: 'n',
-      ctrl: true,
-      action: handleCreatePrompt,
-      description: 'Create new prompt'
-    },
-    {
-      key: '/',
-      action: () => {
-        const searchInput = document.querySelector('input[type="text"]') as HTMLInputElement
-        searchInput?.focus()
-      },
-      description: 'Focus search'
-    },
-    {
-      key: 'Escape',
-      action: () => {
-        if (viewMode === 'edit') {
-          setViewMode('list')
-          setEditingPrompt({})
-        } else if (showShortcutsHelp) {
-          setShowShortcutsHelp(false)
-        }
-      },
-      description: 'Cancel/Go back'
-    },
-    {
-      key: '?',
-      action: () => setShowShortcutsHelp(true),
-      description: 'Show keyboard shortcuts'
-    }
-  ]
-
-  const { shortcuts: shortcutHelp } = useShortcutHelp(shortcuts)
-  useKeyboardShortcuts(shortcuts)
-
   const handleExportToJson = useCallback(() => {
     try {
       exportToJson(prompts)
@@ -190,13 +150,6 @@ function App() {
             <div className="flex justify-between items-center mb-6">
               <h1 className="text-3xl font-bold text-gray-800">Prompts & Notes</h1>
               <div className="flex items-center space-x-4">
-                <button
-                  onClick={() => setShowShortcutsHelp(true)}
-                  className="text-gray-500 hover:text-gray-700 text-sm"
-                  title="Keyboard shortcuts"
-                >
-                  ⌨️
-                </button>
                 <ExportMenu
                   prompts={prompts}
                   onExportToJson={handleExportToJson}
@@ -245,12 +198,6 @@ function App() {
         </div>
       </div>
 
-      {showShortcutsHelp && (
-        <KeyboardShortcutsHelp
-          shortcuts={shortcutHelp}
-          onClose={() => setShowShortcutsHelp(false)}
-        />
-      )}
     </ErrorBoundary>
   )
 }
