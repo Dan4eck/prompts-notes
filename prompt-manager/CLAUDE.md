@@ -76,55 +76,62 @@ npm test             # Run tests with Vitest (configured but no tests yet)
 
 ### Project Structure
 ```
-.
-├── CLAUDE.md
-├── eslint.config.js
-├── index.html
-├── package-lock.json
-├── package.json
-├── history.md
-├── postcss.config.js
-├── prd.md
-├── public
-│   ├── manifest.json
-│   └── vite.svg
-├── src
-│   ├── App.css                    # Global styles and CSS variables
-│   ├── App.tsx                    # Main application orchestrator
-│   ├── assets
-│   │   └── react.svg
-│   ├── components
-│   │   ├── ErrorBoundary.tsx      # React error boundary wrapper
-│   │   ├── ErrorBoundary.css      # Error boundary styles
-│   │   ├── ErrorMessage.tsx        # Reusable error message component
-│   │   ├── ErrorMessage.css        # Error message styles
-│   │   ├── ExportMenu.tsx         # Export functionality component
-│   │   ├── ExportMenu.css         # Export menu-specific styles
-│   │   ├── LoadingSpinner.tsx     # Loading spinner component
-│   │   ├── LoadingSpinner.css     # Spinner styles
-│   │   ├── PromptCard.tsx         # Individual prompt card component
-│   │   ├── PromptCard.css         # Card-specific styles
-│   │   ├── PromptEditor.tsx       # Prompt creation/editing component
-│   │   ├── PromptEditor.css       # Editor-specific styles
-│   │   ├── PromptList.tsx         # List view component
-│   │   ├── PromptList.css         # List-specific styles
-│   │   ├── SearchBar.tsx          # Search functionality component
-│   │   ├── SearchBar.css          # Search-specific styles
-│   │   ├── TagFilter.tsx          # Tag filtering component
-│   │   └── TagFilter.css          # Tag filter-specific styles
-│   ├── hooks
-│   │   ├── useExport.ts           # Export functionality hook
-│   │   ├── usePromptFilter.ts     # Filtering and sorting hook
-│   │   └── usePrompts.ts          # Prompt data management hook
-│   ├── types
-│   │   └── index.ts               # Centralized TypeScript types
-│   ├── main.tsx
-│   └── vite-env.d.ts
-├── tailwind.config.js
-├── tsconfig.app.json
-├── tsconfig.json
-├── tsconfig.node.json
-└── vite.config.ts
+├── plan.md
+└── prompt-manager
+    ├── CLAUDE.md
+    ├── dist
+    │   ├── assets
+    │   │   ├── popup.css
+    │   │   └── popup.js
+    │   ├── index.html
+    │   ├── manifest.json
+    │   └── vite.svg
+    ├── eslint.config.js
+    ├── index.html
+    ├── package-lock.json
+    ├── package.json
+    ├── postcss.config.js
+    ├── public
+    │   ├── manifest.json
+    │   └── vite.svg
+    ├── src
+    │   ├── App.css
+    │   ├── App.tsx
+    │   ├── assets
+    │   │   ├── Screenshot 2025-09-19 at 11.27.59.png
+    │   │   └── react.svg
+    │   ├── components
+    │   │   ├── ErrorBoundary.css
+    │   │   ├── ErrorBoundary.tsx
+    │   │   ├── ErrorMessage.css
+    │   │   ├── ErrorMessage.tsx
+    │   │   ├── ExportMenu.css
+    │   │   ├── ExportMenu.tsx
+    │   │   ├── LoadingSpinner.css
+    │   │   ├── LoadingSpinner.tsx
+    │   │   ├── PromptCard.css
+    │   │   ├── PromptCard.tsx
+    │   │   ├── PromptEditor.css
+    │   │   ├── PromptEditor.tsx
+    │   │   ├── PromptList.css
+    │   │   ├── PromptList.tsx
+    │   │   ├── SearchBar.css
+    │   │   ├── SearchBar.tsx
+    │   │   ├── TagFilter.css
+    │   │   └── TagFilter.tsx
+    │   ├── hooks
+    │   │   ├── useExport.ts
+    │   │   ├── usePromptFilter.ts
+    │   │   └── usePrompts.ts
+    │   ├── main.tsx
+    │   ├── types
+    │   │   └── index.ts
+    │   └── vite-env.d.ts
+    ├── tailwind.config.js
+    ├── tsconfig.app.json
+    ├── tsconfig.json
+    ├── tsconfig.node.json
+    └── vite.config.ts
 ```
 
 ### Key Features
